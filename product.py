@@ -43,3 +43,10 @@ class Product:
             raise ValueError("Stock invalido")
         else:
             self._stock=new_stock
+
+    def to_dict(self):
+        return {
+            "name":self._name,
+            "price":self._price,
+            "stock":self._stock
+        }
