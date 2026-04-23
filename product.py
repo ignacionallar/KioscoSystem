@@ -1,7 +1,11 @@
 class Product:
     def __init__(self,name,price,stock):
+        if name == "":
+            raise ValueError("Nombre vacio")
         if price<0:
             raise ValueError("Precio negativo")
+        if stock<=0:
+            raise ValueError("Stock invalido")
         
         self._name=name
         self._price=price
