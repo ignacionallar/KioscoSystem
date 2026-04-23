@@ -25,12 +25,21 @@ class Product:
     
     @name.setter
     def name(self,new_name):
-        self._name=new_name
+        if new_name == "":
+            raise ValueError("Nombre vacio")
+        else:
+            self._name=new_name
 
     @price.setter
     def price(self,new_price):
-        self._price=new_price
+        if new_price < 0:
+            raise ValueError("Precio negativo")
+        else:  
+            self._price=new_price
 
     @stock.setter
     def stock(self,new_stock):
-        self._stock=new_stock
+        if new_stock <= 0:
+            raise ValueError("Stock invalido")
+        else:
+            self._stock=new_stock
