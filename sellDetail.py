@@ -20,3 +20,8 @@ class SellDetail:
     @quantity.setter
     def quantity(self, new_quantity):
         self._quantity= new_quantity
+
+    def calculate_subtotal(self):
+        return self._product.price * self._quantity
+    
+    
