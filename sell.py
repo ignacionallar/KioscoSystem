@@ -29,5 +29,6 @@ class Sell:
     def items(self,new_items):
         self._items=new_items
         
-    
+    def add_item(self, producto: Product, cantidad):
+        self._items.append(SellDetail(producto, cantidad))
 
