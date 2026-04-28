@@ -25,3 +25,11 @@ class SellDetail:
         self._subtotal=self._product.price * self._quantity
         return self._subtotal
     
+    @property
+    def subtotal(self):
+        return self._subtotal
+    
+    @subtotal.setter
+    def subtotal(self, new_subtotal):
+        self._subtotal=new_subtotal
+    
