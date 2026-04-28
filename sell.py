@@ -32,3 +32,9 @@ class Sell:
     def add_item(self, producto: Product, cantidad):
         self._items.append(SellDetail(producto, cantidad))
 
+    def to_dict(self):
+        return {
+            "total": self.total,
+            "fecha": self._date
+        }
+
