@@ -22,6 +22,6 @@ class SellDetail:
         self._quantity= new_quantity
 
     def calculate_subtotal(self):
-        return self._product.price * self._quantity
-    
+        self._subtotal=self._product.price * self._quantity
+        return self._subtotal
     
