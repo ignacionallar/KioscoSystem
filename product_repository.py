@@ -15,7 +15,7 @@ class ProductRepository:
                 """
                 CREATE TABLE IF NOT EXISTS products(
                     id integer primary key autoincrement,
-                    name text not null,
+                    name text not null UNIQUE,
                     price real not null,
                     stock integer not null default 0
                 )
@@ -24,6 +24,14 @@ class ProductRepository:
 
     def insert_product(self, producto:Product):
         with self.connect() as con:
+            existe = con.execute(
+                "SELECT 1 FROM products WHERE name = ?",
+                (producto.name,)
+            ).fetchone()
+
+            if existe:
+                return False
+            
             cur= con.execute(" INSERT INTO products(name, price, stock) values (?,?,?)",
                 (
                     producto.name, producto.price, producto.stock
@@ -43,14 +51,14 @@ class ProductRepository:
     def get_stock_product(self,id):
         with self.connect() as con:
             con.row_factory= sqlite3.Row
-            row= con.execute("SELECT stock FROM products where id= {id}").fetchone()
-            return row["stock"]
+            row= con.execute("SELECT stock FROM products where id= ?",(id,)).fetchone()
+            return row["stock"] if row else None
         
     def delete_product(self,id):
         try:
             with self.connect() as con:
                 con.row_factory= sqlite3.Row
-                row= con.execute("DELETE FROM products where id= {id}")
+                row= con.execute("DELETE FROM products where id= ?",(id,))
                 return True
         except:
             return False
