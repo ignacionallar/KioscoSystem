@@ -13,8 +13,8 @@ class ProductRepository:
         with self.connect() as con:
             con.execute(
                 """
-                CREATE TABLE IF NOT EXIST products(
-                    id integer primery key autoincrement,
+                CREATE TABLE IF NOT EXISTS products(
+                    id integer primary key autoincrement,
                     name text not null,
                     price real not null,
                     stock integer not null default 0
@@ -34,23 +34,23 @@ class ProductRepository:
     def get_all_products(self):
         with self.connect() as con:
             con.row_factory= sqlite3.Row
-            rows= con.execute("SELECT * FROM products").fetchall()
+            rows= con.execute("SELECT DISTINCT * FROM products").fetchall()
             productos=[]
             for fila in rows:
-                productos.append(Product(fila["name"],fila["stock"],fila["id"]))
+                productos.append(Product(fila["name"],fila["price"],fila["stock"],fila["id"]))
             return productos
         
     def get_stock_product(self,id):
         with self.connect() as con:
             con.row_factory= sqlite3.Row
-            row= con.execute(f"SELECT stock FROM products where id= {id}").fetchone()
+            row= con.execute("SELECT stock FROM products where id= {id}").fetchone()
             return row["stock"]
         
     def delete_product(self,id):
         try:
             with self.connect() as con:
                 con.row_factory= sqlite3.Row
-                row= con.execute(f"DELETE FROM products where id= {id}")
+                row= con.execute("DELETE FROM products where id= {id}")
                 return True
         except:
             return False
