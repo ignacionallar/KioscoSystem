@@ -9,12 +9,14 @@ class Sell:
         self._total=0
 
     def calculate_total(self):
-        for item in item:
-            self._total=item.subtotal+self._total
-        return self._total
+        total=0
+        for item in self._items:
+            total=item.subtotal+total
+        return total
     
     @property
     def total(self):
+        self._total=self.calculate_total()
         return self._total
     
     @property
@@ -37,4 +39,3 @@ class Sell:
             "total": self.total,
             "fecha": self._date
         }
-

@@ -22,14 +22,22 @@ class SellDetail:
         self._quantity= new_quantity
 
     def calculate_subtotal(self):
-        self._subtotal=self._product.price * self._quantity
-        return self._subtotal
+        x=self.product.price * self._quantity
+        return x
     
     @property
     def subtotal(self):
+        self._subtotal=self.calculate_subtotal()
         return self._subtotal
     
     @subtotal.setter
     def subtotal(self, new_subtotal):
         self._subtotal=new_subtotal
+
+    def to_dict(self):
+        return {
+            "name":self._product.name,
+            "quantity":self._quantity,
+            "subtotal":self.subtotal
+        }
     
