@@ -1,22 +1,37 @@
 import datetime as dt
-from product import Producto
+from producto import Producto
 from detalleventa import DetalleVenta
 
 class Venta():
     def __init__(self):
         self._date= dt.datetime.now().isoformat()
-        self._producto=[]
+        self._productos=[]
+        self._total=0
+
     @property
     def total(self):
         total= 0
-        for detalleventa in self._producto:
-            total+=self._subtotal
-        return total
+        for producto in self._productos:
+            total+=producto.subtotal()
+        return self._total
+    
+    @property
+    def productos(self):
+        return self._productos
+    
+    @total.setter
+    def total(self,nuevo_total):
+        self._total= nuevo_total
+    
+    @productos.setter
+    def productos(self, nuevo_producto):
+        self._pro= nuevo_producto
+
     def agregar_detalleventa(self, producto: Producto, cantidad):
         self._detalleventa.append(DetalleVenta(producto, cantidad))
 
     def to_dict(self):
         return{
-            "total": self._total,
+            "total": self.total,
             "fecha": self._date
         }       
