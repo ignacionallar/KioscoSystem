@@ -9,6 +9,6 @@ print(producto1.to_dict())
 print(producto2.to_dict())
 
 venta=Venta()
-venta.agregar_detalleventa(producto1,1)
+venta.agregar_detalleventa(producto1,5)
 venta.agregar_detalleventa(producto2,4)
 print(venta.to_dict())

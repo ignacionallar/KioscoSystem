@@ -27,7 +27,7 @@ class DetalleVenta:
         self._cantidad= nueva_cantidad
 
     @subtotal.setter
-    def subtotal (self, nuevo_subtotal):
+    def subtotal(self, nuevo_subtotal):
         self._subtotal= nuevo_subtotal
 
     def to_dict(self):

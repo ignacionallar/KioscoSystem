@@ -22,10 +22,10 @@ class Venta():
     @total.setter
     def total(self,nuevo_total):
         self._total= nuevo_total
-    
+
     @productos.setter
     def productos(self, nuevo_producto):
-        self._pro= nuevo_producto
+        self._productos= nuevo_producto
 
     def agregar_detalleventa(self, producto: Producto, cantidad):
         self._productos.append(DetalleVenta(producto, cantidad))
@@ -34,4 +34,4 @@ class Venta():
         return{
             "total": self.total,
             "fecha": self._date
-        }       
+        }
