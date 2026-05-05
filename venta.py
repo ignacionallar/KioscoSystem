@@ -12,7 +12,7 @@ class Venta():
     def total(self):
         total= 0
         for producto in self._productos:
-            total+=producto.subtotal()
+            self._total+=producto.subtotal
         return self._total
     
     @property
@@ -28,7 +28,7 @@ class Venta():
         self._pro= nuevo_producto
 
     def agregar_detalleventa(self, producto: Producto, cantidad):
-        self._detalleventa.append(DetalleVenta(producto, cantidad))
+        self._productos.append(DetalleVenta(producto, cantidad))
 
     def to_dict(self):
         return{
