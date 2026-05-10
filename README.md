@@ -1,5 +1,6 @@
 # KioscoSistema
-
+# Integrantes
+## Gil, Hector - Nallar, Ignacio - Rios, Matias - Suarez, Gonzalo
 Este es el repositorio del proyecto de kiosco
 
 # Flujo Git
@@ -36,7 +37,7 @@ git pull
 
  ## Crear merge request dentro del repositorio
 
- ## A prueba de boludos, si trabajas en otra rama que no te corresponde
+ 
  ## Para guardar
  git stash
 
