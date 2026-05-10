@@ -1,64 +1,44 @@
-import sqlite3
-from product import Product
+from typing import List, Optional
+from sqlmodel import Session, select
+from models.product import Product, ProductCreate, ProductRead, ProductUpdate
+
 
 class ProductRepository:
-    def __init__(self, db="kiosco.db"):
-        self._db=db
-        self.create_table()
 
-    def connect(self):
-        return sqlite3.connect(self._db)
-    
-    def create_table(self):
-        with self.connect() as con:
-            con.execute(
-                """
-                CREATE TABLE IF NOT EXISTS products(
-                    id integer primary key autoincrement,
-                    name text not null UNIQUE,
-                    price real not null,
-                    stock integer not null default 0
-                )
-                """
-            )
+    def create(self, session: Session, product_in: ProductCreate) -> ProductRead:
+        product = Product.model_validate(product_in)
+        session.add(product) #insert
+        session.commit() #confirmacion
+        session.refresh(product) #flush
+        return ProductRead.model_validate(product)
 
-    def insert_product(self, producto:Product):
-        with self.connect() as con:
-            existe = con.execute(
-                "SELECT 1 FROM products WHERE name = ?",
-                (producto.name,)
-            ).fetchone()
+    def get_by_id(self, session: Session, product_id: int) -> Optional[ProductRead]:
+        product = session.get(Product, product_id)
+        if not product:
+            return None
+        return ProductRead.model_validate(product)
 
-            if existe:
-                return False
-            
-            cur= con.execute(" INSERT INTO products(name, price, stock) values (?,?,?)",
-                (
-                    producto.name, producto.price, producto.stock
-                )
-            )
-            return True
-        
-    def get_all_products(self):
-        with self.connect() as con:
-            con.row_factory= sqlite3.Row
-            rows= con.execute("SELECT DISTINCT * FROM products").fetchall()
-            productos=[]
-            for fila in rows:
-                productos.append(Product(fila["name"],fila["price"],fila["stock"],fila["id"]))
-            return productos
-        
-    def get_stock_product(self,id):
-        with self.connect() as con:
-            con.row_factory= sqlite3.Row
-            row= con.execute("SELECT stock FROM products where id= ?",(id,)).fetchone()
-            return row["stock"] if row else None
-        
-    def delete_product(self,id):
-        try:
-            with self.connect() as con:
-                con.row_factory= sqlite3.Row
-                row= con.execute("DELETE FROM products where id= ?",(id,))
-                return True
-        except:
+    def get_all(self, session: Session) -> List[ProductRead]:
+        products = session.exec(select(Product)).all()
+        return [ProductRead.model_validate(p) for p in products]
+
+    def update(
+        self, session: Session, product_id: int, product_in: ProductUpdate
+    ) -> Optional[ProductRead]:
+        product = session.get(Product, product_id)
+        if not product:
+            return None
+        update_data = product_in.model_dump(exclude_unset=True)
+        product.sqlmodel_update(update_data)
+        session.add(product)
+        session.commit()
+        session.refresh(product)
+        return ProductRead.model_validate(product)
+
+    def delete(self, session: Session, product_id: int) -> bool:
+        product = session.get(Product, product_id)
+        if not product:
             return False
+        session.delete(product)
+        session.commit()
+        return True
