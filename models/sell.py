@@ -9,7 +9,7 @@ class SellBase(SQLModel):
 
 class Sell(SellBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    details: List["SellDetail"] = Relationship(back_populates="sell")
+    details: List["SellDetail"] = Relationship(back_populates="sell") # pyright: ignore
 
 
 class SellCreate(SellBase):

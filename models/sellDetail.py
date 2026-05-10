@@ -11,7 +11,7 @@ class SellDetailBase(SQLModel):
 
 class SellDetail(SellDetailBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    sell: Optional["Sell"] = Relationship(back_populates="details")
+    sell: Optional["Sell"] = Relationship(back_populates="details") # pyright: ignore
 
 
 class SellDetailCreate(SellDetailBase):
