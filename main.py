@@ -2,9 +2,9 @@ import models.product
 import models.sell
 import models.sellDetail
 
-from services.kiosko_service import KioskoService
+from services.kiosco_service import KioscoService
 
 
 if __name__ == "__main__":
-    app = KioskoService()
+    app = KioscoService()
     app.menu()

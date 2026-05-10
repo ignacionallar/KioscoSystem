@@ -9,7 +9,7 @@ from models.sell import SellCreate, SellUpdate
 from models.sellDetail import SellDetailCreate
 
 
-class KioskoService:
+class KioscoService:
 
     def __init__(self):
         self.product_repo = ProductRepository()
