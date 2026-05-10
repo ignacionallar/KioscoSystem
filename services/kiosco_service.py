@@ -134,7 +134,12 @@ class KioscoService:
                 SellUpdate(total=new_total)
             )
 
-            new_stock = product.stock - quantity
+            db_product = self.product_repo.get_by_id(
+            session,
+            product_id
+            )
+
+            new_stock = db_product.stock - quantity
 
             from models.product import ProductUpdate
 
@@ -143,7 +148,6 @@ class KioscoService:
                 product_id,
                 ProductUpdate(stock=new_stock)
             )
-
         print(
             f"Item agregado: "
             f"{quantity}x {product.name} "
