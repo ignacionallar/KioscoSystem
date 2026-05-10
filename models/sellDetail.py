@@ -1,43 +1,27 @@
-from product import Product
-class SellDetail:
-    def __init__(self, product: Product, quantity):
-        self._product= product
-        self._quantity= quantity
-        self._subtotal=0
+from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
 
-    @property
-    def product(self):
-        return self._product
-    
-    @property
-    def quantity(self):
-        return self._quantity
-    
-    @product.setter
-    def product(self, new_product: Product):
-        self._product= new_product
 
-    @quantity.setter
-    def quantity(self, new_quantity):
-        self._quantity= new_quantity
+class SellDetailBase(SQLModel):
+    quantity: int
+    unit_price: float
+    product_id: int = Field(foreign_key="product.id")
+    sell_id: int = Field(foreign_key="sell.id")
 
-    def calculate_subtotal(self):
-        x=self.product.price * self._quantity
-        return x
-    
-    @property
-    def subtotal(self):
-        self._subtotal=self.calculate_subtotal()
-        return self._subtotal
-    
-    @subtotal.setter
-    def subtotal(self, new_subtotal):
-        self._subtotal=new_subtotal
 
-    def to_dict(self):
-        return {
-            "name":self._product.name,
-            "quantity":self._quantity,
-            "subtotal":self.subtotal
-        }
-    
+class SellDetail(SellDetailBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    sell: Optional["Sell"] = Relationship(back_populates="details")
+
+
+class SellDetailCreate(SellDetailBase):
+    pass
+
+
+class SellDetailRead(SellDetailBase):
+    id: int
+
+
+class SellDetailUpdate(SQLModel):
+    quantity: Optional[int] = None
+    unit_price: Optional[float] = None
