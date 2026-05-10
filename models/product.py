@@ -1,54 +1,32 @@
-class Product:
-    def __init__(self,name,price,stock,id=0):
-        if name == "":
-            raise ValueError("Nombre vacio")
-        if price<0:
-            raise ValueError("Precio negativo")
-        if stock<=0:
-            raise ValueError("Stock invalido")
-        
-        self._name=name
-        self._price=price
-        self._stock=stock
-        self._id=id
-        
-    @property
-    def name(self):
-        return self._name
-    
-    @property
-    def price(self):
-        return self._price
-    
-    @property
-    def stock(self):
-        return self._stock
-    
-    @name.setter
-    def name(self,new_name):
-        if new_name == "":
-            raise ValueError("Nombre vacio")
-        else:
-            self._name=new_name
+from typing import Optional
+from sqlmodel import SQLModel, Field
 
-    @price.setter
-    def price(self,new_price):
-        if new_price < 0:
-            raise ValueError("Precio negativo")
-        else:  
-            self._price=new_price
 
-    @stock.setter
-    def stock(self,new_stock):
-        if new_stock <= 0:
-            raise ValueError("Stock invalido")
-        else:
-            self._stock=new_stock
+class ProductBase(SQLModel):
+    name: str
+    price: float
+    stock: int = 0
 
-    def to_dict(self):
-        return {
-            "name":self._name,
-            "price":self._price,
-            "stock":self._stock,
-            "id":self._id
-        }
+class Product(ProductBase, table=True):
+    """La tabla real. table=True le dice a SQLAlchemy que cree la tabla."""
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+
+class ProductCreate(ProductBase):
+    """DTO para creación"""
+    pass
+
+
+class ProductRead(ProductBase):
+    """DTO de respuesta"""
+    id: int
+
+
+class ProductUpdate(SQLModel):
+    """
+    DTO para actualización parcial (PATCH).
+    Todos los campos son Optional para no obligar a mandar todo
+    """
+    name: Optional[str] = None
+    price: Optional[float] = None
+    stock: Optional[int] = None
