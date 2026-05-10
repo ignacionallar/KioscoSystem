@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 from models.sellDetail import SellDetail, SellDetailCreate, SellDetailRead, SellDetailUpdate
 
 
-class ItemRepository:
+class SellDetailRepository:
 
     def create(self, session: Session, item_in: SellDetailCreate) -> SellDetailRead:
         item = SellDetail.model_validate(item_in)
