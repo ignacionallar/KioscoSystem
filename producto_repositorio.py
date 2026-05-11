@@ -4,7 +4,7 @@ from producto import Producto
 class ProductoRepositorio:
     def __init__(self,db="kiosco.db"):
         self._db=db
-        self.create_table()
+        self.crear_tabla()
         
     def connect(self):
         return sqlite3.connect(self._db)
@@ -25,17 +25,18 @@ class ProductoRepositorio:
         with self.connect() as con:
             existe = con.execute(
                 "SELECT 1 FROM productos WHERE nombre =?",
-                (producto.nombre)
+                (producto.nombre,)
             ).fetchone()
             
             if existe:
                 return False
             
-            cur= con.exacute("INSERT INTO productos(nombre, precio, stock) values (?,?,?)")
-            (
-                    producto.nombre, producto.precio , producto.stock
-            )
+            cur= con.execute(
             
+            "INSERT INTO productos(nombre, precio, stock) values (?,?,?)",
+            (producto.nombre, producto.precio , producto.stock)
+            
+            )
             return True
     
     def get_todos_productos(self):
@@ -50,14 +51,14 @@ class ProductoRepositorio:
     def get_stock_productos(self, id):
         with self.connect()as con:
             con.row_factory= sqlite3.Row
-            row= con.execute("SELECT stock FROM productos WHERE id=?", (id)).fetchone()
+            row= con.execute("SELECT stock FROM productos WHERE id=?", (id,)).fetchone()
             return row ["stock"] if row else None
         
     def eliminar_producto(self,id):
         try:
             with self.connect() as con:
                 con.row_factory= sqlite3.Row
-                row= con.execute("DELETE FROM productos WHERE id= ?",(id))
+                row= con.execute("DELETE FROM productos WHERE id= ?",(id,))
             return True
         except:
             return False
