@@ -1,5 +1,5 @@
 class Product:
-    def __init__(self,name,price,stock):
+    def __init__(self,name,price,stock,id=0):
         if name == "":
             raise ValueError("Nombre vacio")
         if price<0:
@@ -10,6 +10,7 @@ class Product:
         self._name=name
         self._price=price
         self._stock=stock
+        self._id=id
         
     @property
     def name(self):
@@ -43,10 +44,11 @@ class Product:
             raise ValueError("Stock invalido")
         else:
             self._stock=new_stock
-    
+
     def to_dict(self):
-        return{
+        return {
             "name":self._name,
             "price":self._price,
-            "stock":self._stock
+            "stock":self._stock,
+            "id":self._id
         }
